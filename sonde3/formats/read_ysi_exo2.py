@@ -4,13 +4,17 @@ import pytz
 import os
 import io, itertools
 import csv
+import sys
 import warnings
 import six
 import pytz
 from .utils import match_param
 
 
-def read_ysi_exo2_csv(ysi_file,delim=None):
+
+csv.field_size_limit(sys.maxsize)
+
+def read_ysi_exo2_csv(ysi_file,delim=','):
     """
     Method reads a text based YSI sonde instrument file in KOR >2.0 EXO format and returns a pandas DataFrame for the table and metadata.
 
@@ -36,7 +40,7 @@ def read_ysi_exo2_csv(ysi_file,delim=None):
     #grab 30 lines discover what the real header is, then trim the file
 
     #since the YSI EXO2 files contain NULL bytes lets strip those out and just return as a string isntead:
-    ysi_file = ysi_file.read().decode('utf-16')
+    ysi_file = ysi_file.read().decode('ISO-8859-1')
 
     for line in ysi_file:
         line.replace('\0','')
@@ -47,7 +51,7 @@ def read_ysi_exo2_csv(ysi_file,delim=None):
 
     #raw_metadata = pd.read_csv(io.StringIO(ysi_file), sep=delim,header=None, nrows=5)
     #header_row_index = raw_metadata.loc[raw_metadata[0].str.contains("Date")==True].index[0]
-    header_row_index = 6
+    header_row_index = 8
     #raw_metadata = raw_metadata.drop(raw_metadata.index[(header_row_index-2):])
     #grab main file from header point, squash datetime row
 

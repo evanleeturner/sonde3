@@ -12,7 +12,7 @@ from .utils import match_param
 
 
 
-csv.field_size_limit(sys.maxsize)
+#csv.field_size_limit(sys.maxsize)
 
 def read_ysi_exo2_csv(ysi_file,delim=','):
     """
